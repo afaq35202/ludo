@@ -28,9 +28,7 @@ class HomeScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   Align(
-                    alignment: index % 2 == 0
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
+                    alignment: Alignment.centerRight,
                     child: Container(
                       decoration: BoxDecoration(
                           color: containerLightBgColor,
@@ -41,21 +39,17 @@ class HomeScreen extends StatelessWidget {
                       child: RotatedBox(
                         quarterTurns: -1,
                         child: Column(
-                          mainAxisAlignment: index % 2 == 0
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(listData.values.elementAt(index)),
-                            Text("Classic"),
+                            const Text("Classic"),
                           ],
                         ),
                       ),
                     ),
                   ),
                   Align(
-                      alignment: index % 2 == 0
-                          ? Alignment.centerLeft
-                          : Alignment.centerRight,
+                      alignment:Alignment.centerLeft,
                       child: Image.asset(
                         listData.keys.elementAt(index),
                         fit: BoxFit.fill,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ludo/getx_controllers/dashboard_controller.dart';
 import 'package:ludo/screens/dashboard_screen.dart';
 import 'package:ludo/utils/app_colors.dart';
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final DashboardController controller = Get.put(DashboardController());
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const DashboardScreen(),
+      home: const LoginScreen(),
     );
   }
 }

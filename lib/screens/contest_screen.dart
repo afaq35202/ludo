@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ludo/utils/app_colors.dart';
 
+import '../widgets/custom_button_widget.dart';
+
 class ContestScreen extends StatelessWidget {
-  const ContestScreen({Key? key}) : super(key: key);
+  final Function() onPlayButtonClick;
+  const ContestScreen({Key? key,required this.onPlayButtonClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(
-          height: 35,
+          height: 10,
         ),
         Container(
           width: double.infinity,
@@ -23,7 +26,7 @@ class ContestScreen extends StatelessWidget {
           child: Center(
               child: Text(
             "Ludo Classic",
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: customTextBodyColor.withOpacity(0.5)),
           )),
         ),
         Expanded(
@@ -31,7 +34,7 @@ class ContestScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
               itemCount: 10,
               itemBuilder: (context, index) {
-            return const ListItem();
+            return ListItem(onPlayButtonClick: onPlayButtonClick);
           }),
         )
       ],
@@ -40,7 +43,8 @@ class ContestScreen extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({Key? key}) : super(key: key);
+  final Function() onPlayButtonClick;
+  const ListItem({Key? key,required this.onPlayButtonClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,62 +55,89 @@ class ListItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: containerLightBgColor,
           borderRadius: BorderRadius.circular(10)),
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+      padding: const EdgeInsets.only(top:10,right: 10,left: 10),
       child: Table(
-        border: const TableBorder(bottom: BorderSide(color: Colors.white,width: 0.3),),
+        border: const TableBorder(horizontalInside: BorderSide(color: Colors.white,width: 0.3),),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
+          TableRow(
+              children: [
+            TableCell(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Column(
+              children: [
+                  Text(
+                    "₹50",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "Entry Fee",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+                  ),
+              ],
+            ),
+                )),
+            TableCell(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Column(
+              children: [
+                  Text(
+                    "₹90",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "Prize",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+                  ),
+              ],
+            ),
+                )),
+            TableCell(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: CustomButtonWidget2(onPressed: onPlayButtonClick, buttonText: 'Play',),
+                ))
+          ]),
           TableRow(children: [
             TableCell(
-                child: Column(
-              children: [
-                Text(
-                  "₹50",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  "Entry Fee",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: customTextBodyColor.withOpacity(0.5)),
-                ),
-              ],
-            )),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "30 Playing",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+                  ),
+                )),
             TableCell(
-                child: Column(
-              children: [
-                Text(
-                  "₹90",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  "Prize",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: customTextBodyColor.withOpacity(0.5)),
-                ),
-              ],
-            )),
-            TableCell(
-                child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.white),
-                  ))),
-              onPressed: null,
-              child: Text(
-                "PLAY",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(fontSize: 16),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "10 Searching...",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+                  ),
+                )),
+            const TableCell(
+              child: Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: SizedBox.shrink(),
               ),
-            ))
-          ])
+            )
+          ]),
         ],
       ),
     );
