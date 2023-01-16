@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ludo/getx_controllers/dashboard_controller.dart';
 import 'package:ludo/screens/dashboard_screen.dart';
+import 'package:ludo/side_navigation_screens/home_screen.dart';
 import 'package:ludo/utils/app_colors.dart';
 
 import 'authentication_screens/login_screen.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const DashboardScreen(),
     );
   }
 }
