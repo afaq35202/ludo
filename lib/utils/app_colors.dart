@@ -10,6 +10,7 @@ const containerBgColor = Color(0xFF2F0C96);
 const containerLightBgColor = Color(0xFF3812D2);
 const appGreenColor = Color(0xff0D871A);
 const appYellowColor = Color(0xffB0A904);
+const appLightBlueColor = Color(0xFF8D7BFE);
 const screenBackgroundColor = [
   Color(0xFF8D7BFE),
   Color(0xFF1D0FC0),

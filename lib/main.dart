@@ -30,6 +30,13 @@ class MyApp extends StatelessWidget {
                 height: 1,
                 fontFamily: GoogleFonts.fredokaOne().fontFamily,
                 color: customTextHeadingColor),
+            titleMedium: TextStyle(
+                fontSize: 30,
+                letterSpacing: 5,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                fontFamily: GoogleFonts.fredokaOne().fontFamily,
+                color: customTextHeadingColor),
         bodyLarge: TextStyle(
             fontSize: 35,
             fontWeight: FontWeight.w400,

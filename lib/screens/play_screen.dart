@@ -9,7 +9,10 @@ import '../widgets/custom_input_field.dart';
 import 'congratulations_screen.dart';
 
 class PlayScreen extends StatelessWidget {
-  const PlayScreen({Key? key}) : super(key: key);
+  final DashboardController dashboardController;
+
+  const PlayScreen({Key? key, required this.dashboardController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,6 @@ class PlayScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 5), () {
       controller.playScreenView1.value = false;
       controller.playScreenView2.value = true;
-
     });
     return SingleChildScrollView(
       child: Column(
@@ -66,7 +68,7 @@ class PlayScreen extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            "₹50",
+                            "₹${dashboardController.datum.value.entryFees}",
                             style: Theme.of(context).textTheme.bodyMedium!,
                           )
                         ],
@@ -84,7 +86,7 @@ class PlayScreen extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            "₹90",
+                            "₹${dashboardController.datum.value.prize}",
                             style: Theme.of(context).textTheme.bodyMedium!,
                           )
                         ],
@@ -104,22 +106,24 @@ class PlayScreen extends StatelessWidget {
             child: Stack(
               children: [
                 Center(child: SvgPicture.asset("assets/searching.svg")),
-                Obx(() => Center(
-                    child: controller.playScreenView1.isTrue
-                        ? SvgPicture.asset("assets/searching_vector.svg")
-                        : Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: appGreenColor,
-                      ),
-                      width: 65,
-                      height: 65,
-                      child: const FittedBox(
-                          child: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                          )),
-                    )),),
+                Obx(
+                  () => Center(
+                      child: controller.playScreenView1.isTrue
+                          ? SvgPicture.asset("assets/searching_vector.svg")
+                          : Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: appGreenColor,
+                              ),
+                              width: 65,
+                              height: 65,
+                              child: const FittedBox(
+                                  child: Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              )),
+                            )),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 35, left: 35),
                   child: Column(

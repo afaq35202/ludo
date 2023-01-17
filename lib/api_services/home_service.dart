@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:ludo/api_services/base_service.dart';
 
-import '../data_models/games_response.dart';
+import '../data_models/responses/games_response.dart';
+
 
 class HomeService extends BaseService {
   Future<GamesResponse?> getGames(String url) async {

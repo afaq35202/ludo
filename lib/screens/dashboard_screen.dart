@@ -42,19 +42,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     screens = [
       HomeScreen(
-        onClickBack: () {
+        onClickBack: (value) {
           controller.index.value = 2;
+          controller.gameId.value = value;
         },
       ),
       const ProfileScreen(),
       ContestScreen(
-        onPlayButtonClick: () {
+        dashboardController: controller,
+        onPlayButtonClick: (value) {
           controller.index.value = 3;
+          controller.datum.value = value;
         },
       ),
-      const PlayScreen()
+      PlayScreen(
+        dashboardController: controller,
+      )
     ];
     super.initState();
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override

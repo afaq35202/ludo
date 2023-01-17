@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ludo/getx_controllers/contests_controller.dart';
+import 'package:ludo/getx_controllers/dashboard_controller.dart';
 import 'package:ludo/utils/app_colors.dart';
 
+import '../data_models/responses/game_contests_response.dart';
+import '../utils/common.dart';
 import '../widgets/custom_button_widget.dart';
 
 class ContestScreen extends StatelessWidget {
-  final Function() onPlayButtonClick;
-  const ContestScreen({Key? key,required this.onPlayButtonClick}) : super(key: key);
+  final Function(Datum) onPlayButtonClick;
+  final DashboardController dashboardController;
+
+
+  const ContestScreen(
+      {Key? key, required this.onPlayButtonClick, required this.dashboardController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("Game id is ${dashboardController.gameId}");
+    final contestsController = Get.put(ContestsController(""));
     return Column(
       children: [
         const SizedBox(
@@ -26,25 +38,40 @@ class ContestScreen extends StatelessWidget {
           child: Center(
               child: Text(
             "Ludo Classic",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: customTextBodyColor.withOpacity(0.5)),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: customTextBodyColor.withOpacity(0.5)),
           )),
         ),
-        Expanded(
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-            return ListItem(onPlayButtonClick: onPlayButtonClick);
-          }),
-        )
+        Expanded(child: Obx(() {
+          if (contestsController.isLoading.isTrue) {
+            return Common.loader();
+          } else {
+            return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount:
+                    contestsController.gameContestsResponse.value.data!.length,
+                itemBuilder: (context, index) {
+                  return ListItem(
+                      onPlayButtonClick: onPlayButtonClick,
+                      datum: contestsController
+                          .gameContestsResponse.value.data![index]!);
+                });
+          }
+        }))
       ],
     );
   }
 }
 
 class ListItem extends StatelessWidget {
-  final Function() onPlayButtonClick;
-  const ListItem({Key? key,required this.onPlayButtonClick}) : super(key: key);
+  final Function(Datum) onPlayButtonClick;
+  final Datum datum;
+
+  const ListItem(
+      {Key? key, required this.onPlayButtonClick, required this.datum})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +82,21 @@ class ListItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: containerLightBgColor,
           borderRadius: BorderRadius.circular(10)),
-      padding: const EdgeInsets.only(top:10,right: 10,left: 10),
+      padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: Table(
-        border: const TableBorder(horizontalInside: BorderSide(color: Colors.white,width: 0.3),),
+        border: const TableBorder(
+          horizontalInside: BorderSide(color: Colors.white, width: 0.3),
+        ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
-          TableRow(
-              children: [
+          TableRow(children: [
             TableCell(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Column(
-              children: [
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Column(
+                children: [
                   Text(
-                    "₹50",
+                    "₹${datum.entryFees}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
@@ -78,16 +106,16 @@ class ListItem extends StatelessWidget {
                         .bodySmall!
                         .copyWith(color: customTextBodyColor.withOpacity(0.5)),
                   ),
-              ],
-            ),
-                )),
+                ],
+              ),
+            )),
             TableCell(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Column(
-              children: [
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Column(
+                children: [
                   Text(
-                    "₹90",
+                    "₹${datum.prize}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
@@ -97,40 +125,45 @@ class ListItem extends StatelessWidget {
                         .bodySmall!
                         .copyWith(color: customTextBodyColor.withOpacity(0.5)),
                   ),
-              ],
-            ),
-                )),
+                ],
+              ),
+            )),
             TableCell(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: CustomButtonWidget2(onPressed: onPlayButtonClick, buttonText: 'Play',),
-                ))
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: CustomButtonWidget2(
+                onPressed: (){
+                  onPlayButtonClick(datum);
+                },
+                buttonText: 'Play',
+              ),
+            ))
           ]),
           TableRow(children: [
             TableCell(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(
-                    "30 Playing",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
-                  ),
-                )),
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Text(
+                "30 Playing",
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+              ),
+            )),
             TableCell(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(
-                    "10 Searching...",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color: customTextBodyColor.withOpacity(0.5)),
-                  ),
-                )),
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Text(
+                "10 Searching...",
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+              ),
+            )),
             const TableCell(
               child: Padding(
                 padding: EdgeInsets.only(top: 15.0),

@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:ludo/getx_controllers/home_controller.dart';
 
-import '../screens/contest_screen.dart';
 import '../utils/app_colors.dart';
+import '../utils/common.dart';
 
 class HomeScreen extends StatelessWidget {
-  final Function()? onClickBack;
-  const HomeScreen({Key? key,this.onClickBack}) : super(key: key);
+  final Function(String)? onClickBack;
+
+  const HomeScreen({Key? key, this.onClickBack}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final homeController = Get.put(HomeController());
-    return  Obx(() {
+    return Obx(() {
       if (homeController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+        return Common.loader();
       } else {
         return ListView.builder(
             itemCount: homeController.gamesResponse.value.data!.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: onClickBack,
+                onTap: (){
+                  onClickBack!(homeController.gamesResponse.value
+                      .data![index]!.id.toString());
+                },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   height: 160,
                   width: double.infinity,
                   child: Stack(
@@ -43,19 +46,70 @@ class HomeScreen extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(homeController.gamesResponse.value.data![index]!.name!),
-                                const Text("Classic"),
+                                Text(
+                                  Common.splitText(
+                                      homeController.gamesResponse.value
+                                          .data![index]!.name!,
+                                      " ")[1],
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  Common.splitText(
+                                          homeController.gamesResponse.value
+                                              .data![index]!.name!,
+                                          " ")
+                                      .first,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
                       Align(
-                          alignment:Alignment.centerLeft,
+                          alignment: Alignment.centerLeft,
                           child: Image.asset(
                             "assets/ludo_image.png",
                             fit: BoxFit.fill,
                           )),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 25.0),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Stack(
+                              children: [
+                                // Implement the stroke
+                                Text(
+                                    Common.splitText(
+                                            homeController.gamesResponse.value
+                                                .data![index]!.name!,
+                                            " ")
+                                        .first,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          foreground: Paint()
+                                            ..style = PaintingStyle.stroke
+                                            ..strokeWidth = 8
+                                            ..color = appBlueColor,
+                                        )),
+                                // The text inside
+                                Text(
+                                    Common.splitText(
+                                            homeController.gamesResponse.value
+                                                .data![index]!.name!,
+                                            " ")
+                                        .first,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          color: Colors.white,
+                                        )),
+                              ],
+                            )),
+                      )
                     ],
                   ),
                 ),
