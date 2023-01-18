@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ludo/api_services/contests_service.dart';
 
@@ -20,11 +21,11 @@ class ContestsController extends GetxController{
       isLoading(true);
       var response = await ContestsService().getContests(url);
       if (response != null) {
-        print("response in contest controller ${response.toJson()}");
+        debugPrint("response in contest controller ${response.toJson()}");
         gameContestsResponse.value = response;
       }
     } catch (e) {
-      print("exception in contest controller $e");
+      debugPrint("exception in contest controller $e");
     } finally {
       isLoading(false);
     }

@@ -69,14 +69,20 @@ class OTPScreen extends StatelessWidget {
                             flex: 4,
                             child: TextField(
                               keyboardType: TextInputType.number,
-                              cursorColor: customTextBodyColor,
+                              cursorColor: Colors.black,
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: customTextBlueColor
+                              ),
                               decoration: InputDecoration(
                                   hintText: "Enter Mobile No.",
-                                  contentPadding: const EdgeInsets.all(5),
-                                  hintStyle: TextStyle(
-                                      color:
-                                          customTextBlueColor.withOpacity(0.5)),
+                                  contentPadding: const EdgeInsets.only(left: 10,bottom: 8,top: 12),
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: customTextBlueColor.withOpacity(0.5)),
                                   fillColor: customTextFieldColor,
+                                  isDense: true,
+                                  constraints: const BoxConstraints(maxHeight: 40),
                                   filled: true,
                                   border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.only(

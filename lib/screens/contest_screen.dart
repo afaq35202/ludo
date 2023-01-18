@@ -9,17 +9,14 @@ import '../utils/common.dart';
 import '../widgets/custom_button_widget.dart';
 
 class ContestScreen extends StatelessWidget {
-  final Function(Datum) onPlayButtonClick;
   final DashboardController dashboardController;
 
-
-  const ContestScreen(
-      {Key? key, required this.onPlayButtonClick, required this.dashboardController})
+  const ContestScreen({Key? key, required this.dashboardController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("Game id is ${dashboardController.gameId}");
+    debugPrint("Game id is ${dashboardController.gameId}");
     final contestsController = Get.put(ContestsController(""));
     return Column(
       children: [
@@ -54,7 +51,7 @@ class ContestScreen extends StatelessWidget {
                     contestsController.gameContestsResponse.value.data!.length,
                 itemBuilder: (context, index) {
                   return ListItem(
-                      onPlayButtonClick: onPlayButtonClick,
+                      dashboardController: dashboardController,
                       datum: contestsController
                           .gameContestsResponse.value.data![index]!);
                 });
@@ -66,11 +63,11 @@ class ContestScreen extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
-  final Function(Datum) onPlayButtonClick;
   final Datum datum;
+  final DashboardController dashboardController;
 
   const ListItem(
-      {Key? key, required this.onPlayButtonClick, required this.datum})
+      {Key? key, required this.dashboardController, required this.datum})
       : super(key: key);
 
   @override
@@ -132,8 +129,9 @@ class ListItem extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
               child: CustomButtonWidget2(
-                onPressed: (){
-                  onPlayButtonClick(datum);
+                onPressed: () {
+                  dashboardController.index.value = 3;
+                  dashboardController.datum.value = datum;
                 },
                 buttonText: 'Play',
               ),

@@ -1,17 +1,18 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:ludo/api_services/base_service.dart';
 
 import '../data_models/responses/play_game_response.dart';
 
 class PlayGameService extends BaseService{
-  Future<PlayGameResponse?> getPlayers(String url) async {
+  Future<PlayGameResponse?> getPlayers(String url,Map<String, dynamic>? map) async {
     try {
-      final response = await getDataFromServer(url);
-      print("response in play game service $response");
+      final response = await getDataFromServerWithBody(url,map);
+      debugPrint("response in play game service $response");
       return PlayGameResponse.fromJson(jsonDecode(response));
     } catch (e) {
-      print("EXCEPTION IN GET play game ${e.toString()}");
+      debugPrint("EXCEPTION IN GET play game ${e.toString()}");
       return null;
     }
   }

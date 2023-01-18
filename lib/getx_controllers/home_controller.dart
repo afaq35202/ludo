@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ludo/api_services/home_service.dart';
 
@@ -8,6 +9,7 @@ import '../utils/constant_urls.dart';
 class HomeController extends GetxController {
   var isLoading = true.obs;
   var gamesResponse = GamesResponse().obs;
+  var checkResponse = true.obs;
 
   @override
   void onInit() {
@@ -20,11 +22,14 @@ class HomeController extends GetxController {
       isLoading(true);
       var response = await HomeService().getGames(url);
       if (response != null) {
-        print("response in controller ${response.toJson()}");
+        debugPrint("response in controller ${response.toJson()}");
+        checkResponse(true);
         gamesResponse.value = response;
+      }else{
+        checkResponse(false);
       }
     } catch (e) {
-      print("exception in home controller $e");
+      debugPrint("exception in home controller $e");
     } finally {
       isLoading(false);
     }

@@ -42,18 +42,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     screens = [
       HomeScreen(
-        onClickBack: (value) {
-          controller.index.value = 2;
-          controller.gameId.value = value;
-        },
+        dashboardController: controller,
       ),
       const ProfileScreen(),
       ContestScreen(
         dashboardController: controller,
-        onPlayButtonClick: (value) {
-          controller.index.value = 3;
-          controller.datum.value = value;
-        },
       ),
       PlayScreen(
         dashboardController: controller,
@@ -61,6 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -85,9 +79,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             Text(
               "LUDO",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontSize: 23,
-                  ),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(
+                fontSize: 23,
+              ),
             ),
           ],
         ),
@@ -113,21 +111,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const WidgetSpan(
                         child: SizedBox(
-                      width: 8,
-                    )),
+                          width: 8,
+                        )),
                     WidgetSpan(
                         child: Column(
-                      children: [
-                        Text(
-                          "Cash",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          "500",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ))
+                          children: [
+                            Text(
+                              "Cash",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
+                            ),
+                            Text(
+                              "500",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
+                            ),
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -152,21 +156,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const WidgetSpan(
                         child: SizedBox(
-                      width: 8,
-                    )),
+                          width: 8,
+                        )),
                     WidgetSpan(
                         child: Column(
-                      children: [
-                        Text(
-                          "Earning",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          "2000",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ))
+                          children: [
+                            Text(
+                              "Earning",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
+                            ),
+                            Text(
+                              "2000",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
+                            ),
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -174,10 +184,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: Obx(() => Container(
-          decoration: BoxDecoration(
-              gradient: Common.gradientBackground(allScreensBgColor)),
-          child: screens[controller.index.value])),
+      body: Obx(() =>
+          Container(
+            width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  gradient: Common.gradientBackground(allScreensBgColor)),
+              child: screens[controller.index.value])),
       drawer: ClipRRect(
         borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
@@ -187,10 +200,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           child: Drawer(
               backgroundColor: Colors.transparent,
-              width: MediaQuery.of(context).size.width / 1.5,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.5,
               child: ListView.separated(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 itemCount: sideNavData.length,
                 separatorBuilder: (_, __) {
                   return const Padding(
@@ -205,7 +221,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   return ListTile(
                     title: Text(
                       sideNavData.values.elementAt(index),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyMedium,
                     ),
                     horizontalTitleGap: 0,
                     leading: sideNavData.keys.elementAt(index),
@@ -214,8 +233,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       if (index < 2) {
                         controller.index.value = index;
                       }
-                      if(index == 9){
-                        Get.offAll(()=> const LoginScreen());
+                      if (index == 9) {
+                        Get.offAll(() => const LoginScreen());
                       }
                       // Update the state of the app.
                       // ...

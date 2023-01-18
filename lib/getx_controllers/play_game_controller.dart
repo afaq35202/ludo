@@ -1,15 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:ludo/api_services/home_service.dart';
+import 'package:ludo/data_models/models/play_game_model.dart';
 
 
 import '../api_services/play_game_service.dart';
-import '../data_models/responses/games_response.dart';
 import '../data_models/responses/play_game_response.dart';
 import '../utils/constant_urls.dart';
 
 class PlayGameController extends GetxController {
   var isLoading = true.obs;
+  var playScreenViewAfterSearch = false.obs;
   var playGameResponse = PlayGameResponse().obs;
+  late PlayGameModel model;
+
+  PlayGameController(this.model);
 
   @override
   void onInit() {
@@ -20,13 +24,13 @@ class PlayGameController extends GetxController {
   void getPlayers(String url) async {
     try {
       isLoading(true);
-      var response = await PlayGameService().getPlayers(url);
+      var response = await PlayGameService().getPlayers(url,model.toJson());
       if (response != null) {
-        print("response in play game controller ${response.toJson()}");
+        debugPrint('response in play game controller ${response.toJson()}');
         playGameResponse.value = response;
       }
     } catch (e) {
-      print("exception in play game controller $e");
+      debugPrint("exception in play game controller $e");
     } finally {
       isLoading(false);
     }
