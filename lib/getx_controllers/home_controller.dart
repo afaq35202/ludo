@@ -4,6 +4,7 @@ import 'package:ludo/api_services/home_service.dart';
 
 
 import '../data_models/responses/games_response.dart';
+import '../utils/common.dart';
 import '../utils/constant_urls.dart';
 
 class HomeController extends GetxController {
@@ -20,7 +21,7 @@ class HomeController extends GetxController {
   void fetchGames(String url) async {
     try {
       isLoading(true);
-      var response = await HomeService().getGames(url);
+      var response = await HomeService().getGames(url,Common.getHeaders());
       if (response != null) {
         debugPrint("response in controller ${response.toJson()}");
         checkResponse(true);

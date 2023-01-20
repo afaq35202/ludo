@@ -16,7 +16,7 @@ class ContestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Game id is ${dashboardController.gameId}");
+    //debugPrint("Game id is ${dashboardController.gameId}");
     final contestsController = Get.put(ContestsController(""));
     return Column(
       children: [

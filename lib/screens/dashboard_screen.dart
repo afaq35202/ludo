@@ -21,7 +21,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final DashboardController controller = Get.find<DashboardController>();
-  late List<dynamic> screens = [];
+  late List<Widget> screens = [];
   final Map<Widget, String> sideNavData = {
     const Icon(
       Icons.home_outlined,

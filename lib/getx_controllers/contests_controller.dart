@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ludo/api_services/contests_service.dart';
 
 import '../data_models/responses/game_contests_response.dart';
+import '../utils/common.dart';
 import '../utils/constant_urls.dart';
 
 class ContestsController extends GetxController{
@@ -13,13 +14,13 @@ class ContestsController extends GetxController{
 
   @override
   void onInit() {
-    fetchGameContests(gameContestsApi+gameId);
+    fetchGameContests(gameContestsApi);
     super.onInit();
   }
   void fetchGameContests(String url)async{
     try {
       isLoading(true);
-      var response = await ContestsService().getContests(url);
+      var response = await ContestsService().getContests(url,Common.getHeaders());
       if (response != null) {
         debugPrint("response in contest controller ${response.toJson()}");
         gameContestsResponse.value = response;

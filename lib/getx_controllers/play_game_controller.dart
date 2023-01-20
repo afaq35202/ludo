@@ -5,6 +5,7 @@ import 'package:ludo/data_models/models/play_game_model.dart';
 
 import '../api_services/play_game_service.dart';
 import '../data_models/responses/play_game_response.dart';
+import '../utils/common.dart';
 import '../utils/constant_urls.dart';
 
 class PlayGameController extends GetxController {
@@ -24,7 +25,7 @@ class PlayGameController extends GetxController {
   void getPlayers(String url) async {
     try {
       isLoading(true);
-      var response = await PlayGameService().getPlayers(url,model.toJson());
+      var response = await PlayGameService().getPlayers(url,model.toJson(),Common.getHeaders());
       if (response != null) {
         debugPrint('response in play game controller ${response.toJson()}');
         playGameResponse.value = response;
