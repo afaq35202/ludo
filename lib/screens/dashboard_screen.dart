@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ludo/getx_controllers/contests_controller.dart';
+import 'package:ludo/getx_controllers/play_game_controller.dart';
 import 'package:ludo/screens/play_screen.dart';
 
 import '../authentication_screens/login_screen.dart';
 import '../getx_controllers/dashboard_controller.dart';
+import '../side_navigation_screens/games_hisory.dart';
 import '../side_navigation_screens/home_screen.dart';
 import '../side_navigation_screens/profile_screen.dart';
+import '../side_navigation_screens/support_screen.dart';
 import '../utils/app_colors.dart';
 import '../utils/common.dart';
 import 'contest_screen.dart';
+import 'earnings_screen.dart';
+import 'my_wallet.dart';
+import 'notifications_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -31,10 +38,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     SvgPicture.asset("assets/earnings_icon.svg"): "Earnings",
     SvgPicture.asset("assets/wallet_icon.svg"): "My Wallet",
     SvgPicture.asset("assets/games_history_icon.svg"): "Games History",
-    SvgPicture.asset("assets/transactions_icon.svg"): "Transactions",
     SvgPicture.asset("assets/notifications_icon.svg"): "Notifications",
     SvgPicture.asset("assets/support_icon.svg"): "Support",
-    SvgPicture.asset("assets/about_app_icon.svg"): "About App",
     SvgPicture.asset("assets/logout_icon.svg"): "Logout",
   };
 
@@ -45,12 +50,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         dashboardController: controller,
       ),
       const ProfileScreen(),
+      const EarningsScreen(),
+      const MyWalletScreen(),
+      const GamesHistory(),
+      const NotificationsScreen(),
+      const SupportScreen(),
+      const SizedBox.shrink(),
       ContestScreen(
         dashboardController: controller,
       ),
       PlayScreen(
         dashboardController: controller,
-      )
+      ),
     ];
     super.initState();
   }
@@ -230,10 +241,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     leading: sideNavData.keys.elementAt(index),
                     onTap: () {
                       scaffoldKey.currentState?.closeDrawer();
-                      if (index < 2) {
+                        Get.delete<PlayGameController>();
+                        Get.delete<ContestsController>();
                         controller.index.value = index;
-                      }
-                      if (index == 9) {
+                      if (index == 7) {
                         Get.offAll(() => const LoginScreen());
                       }
                       // Update the state of the app.

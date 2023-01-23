@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ludo/data_models/models/play_game_model.dart';
+import 'package:ludo/getx_controllers/contests_controller.dart';
 import 'package:ludo/getx_controllers/play_game_controller.dart';
 import 'package:ludo/widgets/custom_button_widget.dart';
 
@@ -23,7 +24,7 @@ class PlayScreen extends StatelessWidget {
         gameCategoryId: dashboardController.datum.value.id.toString(),
         gameStatus: "request")));
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         dashboardController.index.value = 0;
         Get.delete<PlayGameController>();
         return false;
@@ -173,106 +174,126 @@ class PlayScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Obx(
-              () {
-                if(playController.isLoading.isTrue){
-                  return Text("Searching...",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: customTextBodyColor.withOpacity(0.5),
-                      ));
-                }else{
-                  return playController.playScreenViewAfterSearch.isFalse?Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: CustomInputField(
-                      hintText: "Enter Room ID",
-                      controller: TextEditingController(),
-                      suffixWidget: Padding(
-                        padding: const EdgeInsets.only(right: 3),
-                        child: CustomButtonWidget2(
-                          onPressed: () {
-                            playController.playScreenViewAfterSearch.value = true;
-                          },
-                          buttonText: "Done",
-                        ),
-                      ),
-                    ),
-                  ):Column(
-                    children: [
-                      Text(
-                        "Room ID: 56847512",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            Obx(() {
+              if (playController.isLoading.isTrue) {
+                return Text("Searching...",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: customTextBodyColor.withOpacity(0.5),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomButtonWidget2(
-                              onPressed: () {},
-                              buttonText: "I WON",
-                              borderColor: Colors.transparent,
-                              radius: 8,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomButtonWidget2(
-                              onPressed: () {},
-                              buttonText: "I LOST",
-                              borderColor: Colors.transparent,
-                              color: Colors.red,
-                              radius: 8,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomButtonWidget2(
-                              onPressed: () {},
-                              buttonText: "CANCEL",
-                              borderColor: Colors.transparent,
-                              color: appYellowColor,
-                              radius: 8,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
+                        ));
+              } else {
+                return playController.playScreenViewAfterSearch.isFalse
+                    ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: CustomInputField(
-                          hintText: "Attach Snap",
+                          hintText: "Enter Room ID",
+                          controller: TextEditingController(),
                           suffixWidget: Padding(
                             padding: const EdgeInsets.only(right: 3),
-                            child: SvgPicture.asset("assets/attach_icon.svg"),
+                            child: CustomButtonWidget2(
+                              onPressed: () {
+                                playController.playScreenViewAfterSearch.value =
+                                    true;
+                                playController.startTimer(15);
+                              },
+                              buttonText: "Done",
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: CustomButtonWidget2(
-                          onPressed: () {
-                            Get.to(() => const CongratulationsScreen());
-                          },
-                          buttonText: "Submit",
-                          borderColor: Colors.transparent,
-                          horizontalPadding: 25,
-                        ),
-                      ),
-                    ],
-                  );
-                }
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            "Room ID: 56847512",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: customTextBodyColor.withOpacity(0.5),
+                                ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          playController.playScreenViewAfterWin.isFalse
+                              ? SizedBox(
+                                  height: 30,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CustomButtonWidget2(
+                                        onPressed: () {
+                                          playController.playScreenViewAfterWin
+                                              .value = true;
+                                        },
+                                        buttonText: "I WON",
+                                        borderColor: Colors.transparent,
+                                        radius: 8,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      CustomButtonWidget2(
+                                        onPressed: () {},
+                                        buttonText: "I LOST",
+                                        borderColor: Colors.transparent,
+                                        color: Colors.red,
+                                        radius: 8,
+                                      ),
+                                      Visibility(
+                                        visible: playController.time.value.trim()!="01",
+                                        child: const SizedBox(
+                                          width: 10,
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: playController.time.value.trim()!="01",
+                                        child: CustomButtonWidget2(
+                                          onPressed: () {},
+                                          buttonText: "CANCEL ${playController.time.value}",
+                                          borderColor: Colors.transparent,
+                                          color: appYellowColor,
+                                          radius: 8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Column(children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 40),
+                                    child: CustomInputField(
+                                      hintText: "Attach Snap",
+                                      suffixWidget: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 3),
+                                        child: SvgPicture.asset(
+                                            "assets/attach_icon.svg"),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                    child: CustomButtonWidget2(
+                                      onPressed: () {
+                                        Get.to(() =>
+                                            const CongratulationsScreen());
+                                        Get.delete<PlayGameController>();
+                                        Get.delete<ContestsController>();
+                                      },
+                                      buttonText: "Submit",
+                                      borderColor: Colors.transparent,
+                                      horizontalPadding: 25,
+                                    ),
+                                  ),
+                                ]),
+                        ],
+                      );
               }
-            ),
+            }),
             const SizedBox(
               height: 30,
             ),

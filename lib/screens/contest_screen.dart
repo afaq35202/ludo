@@ -18,46 +18,59 @@ class ContestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //debugPrint("Game id is ${dashboardController.gameId}");
     final contestsController = Get.put(ContestsController(""));
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: double.infinity,
-          height: 80,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                    "assets/button_background.png",
-                  ),
-                  fit: BoxFit.fill)),
-          child: Center(
-              child: Text(
-            "Ludo Classic",
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: customTextBodyColor.withOpacity(0.5)),
-          )),
-        ),
-        Expanded(child: Obx(() {
-          if (contestsController.isLoading.isTrue) {
-            return Common.loader();
-          } else {
-            return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount:
-                    contestsController.gameContestsResponse.value.data!.length,
-                itemBuilder: (context, index) {
-                  return ListItem(
-                      dashboardController: dashboardController,
-                      datum: contestsController
-                          .gameContestsResponse.value.data![index]!);
-                });
-          }
-        }))
-      ],
+    return WillPopScope(
+      onWillPop: () async {
+        dashboardController.index.value = 0;
+        Get.delete<ContestsController>();
+        return false;
+      },
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            width: double.infinity,
+            height: 80,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      "assets/button_background.png",
+                    ),
+                    fit: BoxFit.fill)),
+            child: Center(
+                child: Text(
+              "Ludo Classic",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: customTextBodyColor.withOpacity(0.5)),
+            )),
+          ),
+          Expanded(child: Obx(() {
+            if (contestsController.isLoading.isTrue) {
+              return Common.loader();
+            } else {
+              if(contestsController.checkResponse.isFalse){
+                return Common.noDataFoundError("Something went wrong",context);
+              }
+              if(contestsController.gameContestsResponse.value.data!.isEmpty){
+                return Common.noDataFoundError("No data found",context);
+              }
+              return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount:
+                      contestsController.gameContestsResponse.value.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListItem(
+                        dashboardController: dashboardController,
+                        datum: contestsController
+                            .gameContestsResponse.value.data![index]!);
+                  });
+            }
+          }))
+        ],
+      ),
     );
   }
 }
@@ -130,7 +143,7 @@ class ListItem extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 15.0),
               child: CustomButtonWidget2(
                 onPressed: () {
-                  dashboardController.index.value = 3;
+                  dashboardController.index.value = 9;
                   dashboardController.datum.value = datum;
                 },
                 buttonText: 'Play',

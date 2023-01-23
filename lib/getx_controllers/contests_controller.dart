@@ -8,6 +8,7 @@ import '../utils/constant_urls.dart';
 
 class ContestsController extends GetxController{
   var isLoading = true.obs;
+  var checkResponse = true.obs;
   late String gameId;
   var gameContestsResponse = GameContestsResponse().obs;
   ContestsController(this.gameId);
@@ -22,8 +23,11 @@ class ContestsController extends GetxController{
       isLoading(true);
       var response = await ContestsService().getContests(url,Common.getHeaders());
       if (response != null) {
+        checkResponse(true);
         debugPrint("response in contest controller ${response.toJson()}");
         gameContestsResponse.value = response;
+      }else{
+        checkResponse(false);
       }
     } catch (e) {
       debugPrint("exception in contest controller $e");

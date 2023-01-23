@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (){
-                    dashboardController.index.value = 2;
+                    dashboardController.index.value = 8;
                     dashboardController.gameId.value = homeController.gamesResponse.value
                         .data![index]!.id.toString();
                   },

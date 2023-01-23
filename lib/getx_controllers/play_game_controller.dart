@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ludo/data_models/models/play_game_model.dart';
@@ -11,8 +13,12 @@ import '../utils/constant_urls.dart';
 class PlayGameController extends GetxController {
   var isLoading = true.obs;
   var playScreenViewAfterSearch = false.obs;
+  var playScreenViewAfterWin = false.obs;
   var playGameResponse = PlayGameResponse().obs;
   late PlayGameModel model;
+  Timer? _timer;
+  int remainSeconds = 1;
+  final time = '70'.obs;
 
   PlayGameController(this.model);
 
@@ -21,7 +27,25 @@ class PlayGameController extends GetxController {
     getPlayers(getPlayersApi);
     super.onInit();
   }
-
+  @override
+  void onClose(){
+    if(_timer!=null){
+      _timer!.cancel();
+    }
+    super.onClose();
+  }
+  startTimer(int seconds){
+    const duration = Duration(seconds: 1);
+    remainSeconds = seconds;
+    _timer = Timer.periodic(duration, (Timer timer) {
+      if(remainSeconds==0){
+        timer.cancel();
+      }else{
+        time.value = remainSeconds.toString().padLeft(2, "0");
+        remainSeconds--;
+      }
+    });
+  }
   void getPlayers(String url) async {
     try {
       isLoading(true);
