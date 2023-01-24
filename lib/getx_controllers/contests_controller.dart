@@ -21,7 +21,7 @@ class ContestsController extends GetxController{
   void fetchGameContests(String url)async{
     try {
       isLoading(true);
-      var response = await ContestsService().getContests(url,Common.getHeaders());
+      var response = await ContestsService().getContests(url+gameId,Common.getHeaders());
       if (response != null) {
         checkResponse(true);
         debugPrint("response in contest controller ${response.toJson()}");

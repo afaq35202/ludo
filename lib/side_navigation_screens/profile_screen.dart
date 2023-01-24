@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ludo/utils/app_colors.dart';
+import 'package:ludo/widgets/custom_button_widget.dart';
 import 'package:ludo/widgets/custom_input_field.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -33,6 +34,13 @@ class ProfileScreen extends StatelessWidget {
           const CustomInputField(
             heading: "Name",
           ),
+          const SizedBox(height: 20,),
+          const CustomInputField(
+            heading: "Phone",
+          ),
+          const Spacer(),
+          CustomButtonWidget2(onPressed: (){}, buttonText: 'Update',borderColor: Colors.transparent,horizontalPadding: 50,),
+          const SizedBox(height: 20,),
         ],
       ),
     );

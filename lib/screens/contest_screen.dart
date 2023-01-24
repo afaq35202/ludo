@@ -17,7 +17,7 @@ class ContestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //debugPrint("Game id is ${dashboardController.gameId}");
-    final contestsController = Get.put(ContestsController(""));
+    final contestsController = Get.put(ContestsController(dashboardController.gameId.value));
     return WillPopScope(
       onWillPop: () async {
         dashboardController.index.value = 0;

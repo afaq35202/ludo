@@ -42,7 +42,7 @@ class BaseService {
         //show error message
         return null;
       }
-    }catch(e){
+    } catch (e) {
       debugPrint("exception in response $e");
     }
   }
@@ -76,6 +76,28 @@ class BaseService {
     var response = await http
         .post(Uri.parse(apiUrl), body: map, headers: headers)
         .timeout(Duration(seconds: _apiTimeOut));
+    debugPrint("response here: ${response.body}");
+    if (response.statusCode == 200) {
+      debugPrint("response here: ${response.body}");
+      return response.body;
+    } else {
+      debugPrint("error in response");
+      //show error message
+      return null;
+    }
+  }
+
+  @protected
+  Future<dynamic> getDataFromServerWithBodyAndHeader2(
+      String url, String map, Map<String, String>? headers) async {
+    var apiUrl = baseApiUrl + url;
+    debugPrint("api url: $apiUrl");
+    debugPrint("headers: $headers");
+    debugPrint("map data: $map");
+    var response = await http
+        .post(Uri.parse(apiUrl), body: map, headers: headers)
+        .timeout(Duration(seconds: _apiTimeOut));
+    debugPrint("response here: ${response.body}");
     if (response.statusCode == 200) {
       debugPrint("response here: ${response.body}");
       return response.body;

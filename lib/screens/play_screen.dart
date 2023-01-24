@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:ludo/getx_controllers/contests_controller.dart';
 import 'package:ludo/getx_controllers/play_game_controller.dart';
 import 'package:ludo/widgets/custom_button_widget.dart';
 
+import '../data_models/models/game_won_model.dart';
 import '../getx_controllers/dashboard_controller.dart';
 import '../utils/app_colors.dart';
 import '../widgets/custom_input_field.dart';
@@ -25,7 +28,7 @@ class PlayScreen extends StatelessWidget {
         gameStatus: "request")));
     return WillPopScope(
       onWillPop: () async {
-        dashboardController.index.value = 0;
+        dashboardController.index.value = 8;
         Get.delete<PlayGameController>();
         return false;
       },
@@ -233,23 +236,42 @@ class PlayScreen extends StatelessWidget {
                                         width: 10,
                                       ),
                                       CustomButtonWidget2(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          var data = {
+                                            "game_id":"1",
+                                            "game_categpry_id":"1",
+                                            "test_user_id":[1]
+
+                                          };
+                                          playController.gameLostApi(json.encode(data)
+                                          );
+                                          dashboardController.index.value = 0;
+                                          Get.delete<PlayGameController>();
+                                        },
                                         buttonText: "I LOST",
                                         borderColor: Colors.transparent,
                                         color: Colors.red,
                                         radius: 8,
                                       ),
                                       Visibility(
-                                        visible: playController.time.value.trim()!="01",
+                                        visible:
+                                            playController.time.value.trim() !=
+                                                "01",
                                         child: const SizedBox(
                                           width: 10,
                                         ),
                                       ),
                                       Visibility(
-                                        visible: playController.time.value.trim()!="01",
+                                        visible:
+                                            playController.time.value.trim() !=
+                                                "01",
                                         child: CustomButtonWidget2(
-                                          onPressed: () {},
-                                          buttonText: "CANCEL ${playController.time.value}",
+                                          onPressed: () {
+                                            dashboardController.index.value = 8;
+                                            Get.delete<PlayGameController>();
+                                          },
+                                          buttonText:
+                                              "CANCEL ${playController.time.value}",
                                           borderColor: Colors.transparent,
                                           color: appYellowColor,
                                           radius: 8,
